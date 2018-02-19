@@ -41,10 +41,8 @@ char receivedChars[numChars]; // an array to store the received data
 
 RF24 radio(9, 10);
 
-// Receiver *rcvptr;
-// Sender *sndptr;
-Receiver receiver(radio);
-Sender sender(radio);
+Receiver *rcvptr;
+Sender *sndptr;
 
 Led *ledptr;
 
@@ -53,6 +51,8 @@ void setup()
     Serial.begin(115200);
     Serial.println("Nothin");
     ledptr[0].setup(ledPin, 1);
+    rcvptr = &Receiver(radio);
+    sndptr = &Sender(radio);
 }
 
 void loop()
@@ -87,13 +87,14 @@ void receive()
 {
     Serial.println("Receiving...");
 
-    receiver.getValues(recdValues);
+    rcvptr->getValues(recdValues);
 }
 
 void transmit()
 {
     Serial.println("Transmitting...");
-    sender.sendValues(message);
+    
+    sndptr->sendValues(message);
 }
 
 void showData()
